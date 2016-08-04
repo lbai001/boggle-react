@@ -9,15 +9,16 @@ export default class Board extends Component {
 
  constructor (props) {
 		super(props);
-  		let completeboard=this.createRows(this.formatLetters(this.createButtons(this.diceGenarator())))
+		let objectBoard=this.formatLetters(this.diceGenarator())
+  	let completeboard=this.createRows(this.createButtons(objectBoard))
 		this.state = {
 			item:"",
-			board: completeboard
+			lastitem:null,
+			board: completeboard,
+			objectBoard: objectBoard
 		}
 	}
 
-
- 
  diceGenarator () {  	
   	let dice=["aaafrs","aaeeee","aafirs","adennn","aeeeem","aeegmu","aegmnn","afirsy","bjkqxz","ccenst","ceiilt","ceilpt","ceipst","ddhnot","dhhlor","dhlnor","dhlnor","eiiitt","emottt","ensssu","fiprsy","gorrvw","iprrry","nootuw","ooottuS"]
   	let holder=[]
@@ -33,7 +34,7 @@ export default class Board extends Component {
 
   	console.log("hi i'm holder", holder)
   	for(let i=0;i<holder.length;i++){
-  			result.push(holder[i][randomLetter])
+  			result.push({key: holder[i][randomLetter]})
   		
   	}
   	console.log(result);
@@ -65,25 +66,62 @@ export default class Board extends Component {
  	});
  }
 
- onItemClick(item) {
- 	console.log(this.state)
- 	let newWord = this.state.item += item;
- 	this.setState({
- 		item: newWord
- 	})
-  }
+ onItemClick (item) {
+    console.log(item)
+    let currentletter=item.key
+    this.setState({
+      item: this.state.item+=currentletter,
+      lastitem: item
+    })
+    console.log(this.state.lastitem)
+    if(this.state.currentitem!==this.state.item.charAt(0)){
+      if(this.validChoice(item)===false){
+        console.log('ifif is hitting', this.state.lastitem.key)
+        this.setState({
+          item: this.state.item.slice(item.key, -1),
+          lastitem: this.state.lastitem
+        })
+      }
+    }
+ 	}
+ 
+  createButtons (array) {
+ 	return array.map((arr) => {
+ 		return (arr).map((elem) => {
 
-
- createButtons (array) {
- 	return (array).map((elem) => {
- 		let boundItemClick = this.onItemClick.bind(this, elem);
-
- 		return(
-		<button onClick={boundItemClick}>{elem}</button>		
-		)
+ 			return(
+			<button color='red' onClick={this.onItemClick.bind(this, elem)}>{elem.key}</button>		
+			)
+ 		})	
  	})
  }
-  render() {
+
+ getLocation (array,item) {
+ 	console.log("in currentlo",item)
+ 	for(var i=0;i<array.length;i++){
+ 		var currentRow=array[i]
+ 		var currentRowNum=i
+ 		if(currentRow.indexOf(item)!==-1){
+ 			return {row: currentRowNum, index: currentRow.indexOf(item)}
+ 		}
+ 	}
+ }
+
+ validChoice (item) {
+ 	var flag=true
+  let current=this.getLocation(this.state.objectBoard, this.state.lastitem)
+  let last=this.getLocation(this.state.objectBoard, item)
+  console.log("current location", current)
+  console.log("last location", last)
+ 	if((current.index-last.index)!==1 && (last.index-current.index)!==1 && (current.row-last.row)!==1 && (last.row-current.row)!==-1){
+ 		flag = false
+ 	}else{
+ 		flag = true
+ 	}
+  return flag
+	}
+
+  render () {
     return (      
       <div>
       <h1>I am board!</h1>
