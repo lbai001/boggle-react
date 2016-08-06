@@ -2,22 +2,50 @@ import React, {Component} from 'react';
 import Button from 'react-bootstrap/lib/Button';
 import Score from './Score'
 import Current from './Current'
-console.log(Button)
+
+const styles = {
+  Button: {
+    width: 50,
+    height: 50,
+    margin: 5,
+    background:'white'
+  },
+  ButtonActive: {
+    width: 50,
+    height: 50,
+    margin: 5,
+    background:'blue'
+  },
+  ButtonDeactive: {
+    width: 50,
+    height: 50,
+    margin: 5,
+    background:'red'
+  }
+};
 
 export default class Board extends Component {
-
-
  constructor (props) {
 		super(props);
+    this.state = {
+      item:"",
+      clicked:[],
+      board: null,
+      objectBoard: null,
+      css: styles.Button,
+      activeCss: styles.ButtonActive
+    }
+  }
+
+  componentWillMount() {
 		let objectBoard=this.formatLetters(this.diceGenarator())
-  	let completeboard=this.createRows(this.createButtons(objectBoard))
-		this.state = {
-			item:"",
-			lastitem:null,
-			board: completeboard,
-			objectBoard: objectBoard
-		}
-	}
+  	let completeBoard=this.createRows(this.createButtons(objectBoard))
+    this.setState({
+      board: completeBoard,
+      objectBoard: objectBoard
+    })
+  }
+
 
  diceGenarator () {  	
   	let dice=["aaafrs","aaeeee","aafirs","adennn","aeeeem","aeegmu","aegmnn","afirsy","bjkqxz","ccenst","ceiilt","ceilpt","ceipst","ddhnot","dhhlor","dhlnor","dhlnor","eiiitt","emottt","ensssu","fiprsy","gorrvw","iprrry","nootuw","ooottuS"]
@@ -34,10 +62,14 @@ export default class Board extends Component {
 
   	console.log("hi i'm holder", holder)
   	for(let i=0;i<holder.length;i++){
-  			result.push({key: holder[i][randomLetter]})
-  		
-  	}
-  	console.log(result);
+  			holder[i]=holder[i].toUpperCase()
+        result.push({key: holder[i][randomLetter]})
+  		}
+    for(var i=0;i<result.length;i++){
+      if(result[i].key==="Q"){
+        result[i].key+="u"
+      }
+    }
   	return result;
   }
 
@@ -58,68 +90,68 @@ export default class Board extends Component {
  createRows (array) {
  	return (array).map((elem) => {
  		return (
- 			<div>
- 			{elem}
- 			<br/>
- 			</div>
+      <div>
+ 			  {elem}
+ 			  <br/>
+      </div>
  		)
  	});
  }
 
  onItemClick (item) {
-    console.log(item)
-    let currentletter=item.key
-    this.setState({
-      item: this.state.item+=currentletter,
-      lastitem: item
-    })
-    console.log(this.state.lastitem)
-    if(this.state.currentitem!==this.state.item.charAt(0)){
-      if(this.validChoice(item)===false){
-        console.log('ifif is hitting', this.state.lastitem.key)
+  var currentitem=this.getLocation(this.state.objectBoard,item)
+  console.log(this.state.clicked);
+  var previtem=this.getLocation(this.state.objectBoard, this.state.clicked[this.state.clicked.length - 1])
+  if(this.state.clicked.indexOf(item)===-1){
+    if(this.state.clicked.length === 0){
+      this.state.clicked.push(item)
+      this.setState({
+        item: this.state.item+=item.key
+      })
+    } else if((Math.abs(currentitem.row - previtem.row)===0 || Math.abs(currentitem.row - previtem.row)===1) && (Math.abs(currentitem.index - previtem.index)===0 || Math.abs(currentitem.index - previtem.index)===1)){
+        this.state.clicked.push(item)
         this.setState({
-          item: this.state.item.slice(item.key, -1),
-          lastitem: this.state.lastitem
+          item: this.state.item+=item.key
         })
-      }
+     }
+    }else if(this.state.clicked[this.state.clicked.length-1] === item) {
+      this.state.clicked.pop()
+      this.setState({
+        item: this.state.item.substring(0, this.state.clicked.length)
+      })
     }
  	}
+
+  cssFilter (elem) {
+    console.log(elem)
+    console.log(this.state.clicked)
+    if(this.state.clicked.indexOf(elem) > -1) {
+      return this.state.activeCss
+    }else {
+    return this.state.css
+  }
+  }
  
   createButtons (array) {
- 	return array.map((arr) => {
- 		return (arr).map((elem) => {
 
- 			return(
-			<button color='red' onClick={this.onItemClick.bind(this, elem)}>{elem.key}</button>		
-			)
- 		})	
- 	})
+    return array.map((arr) => {
+ 		 return (arr).map((elem) => {
+        return(
+        <Button style={this.state.css} onClick={this.onItemClick.bind(this, elem)}>{elem.key}</Button>
+			   )
+ 		   })	
+ 	  })
  }
-
+ 
  getLocation (array,item) {
- 	console.log("in currentlo",item)
  	for(var i=0;i<array.length;i++){
  		var currentRow=array[i]
  		var currentRowNum=i
  		if(currentRow.indexOf(item)!==-1){
- 			return {row: currentRowNum, index: currentRow.indexOf(item)}
+ 			return {key: item.key, row: currentRowNum, index: currentRow.indexOf(item)}
  		}
  	}
  }
-
- validChoice (item) {
- 	var flag=true
-  let current=this.getLocation(this.state.objectBoard, this.state.lastitem)
-  let last=this.getLocation(this.state.objectBoard, item)
-  console.log("current location", current)
-  console.log("last location", last)
- 	if((current.index-last.index)!==1 && (last.index-current.index)!==1 && (current.row-last.row)!==1 && (last.row-current.row)!==-1){
- 		flag = false
- 	}else{
- 		flag = true
- 	}
-  return flag
-	}
 
   render () {
     return (      
