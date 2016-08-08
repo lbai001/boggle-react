@@ -9,13 +9,6 @@ const styles = {
     	 textalign: "center",
     	 background:"white"
     },
-    widerow: {
-    	 border: "5px solid orange",
-    	 padding: 10,
-    	 textalign: "center",
-    	 background:"white",
-    	 width: 300
-    },
 	span:{
 		fontWeight: "bold"
 	},

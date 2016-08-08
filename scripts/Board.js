@@ -24,7 +24,8 @@ const styles = {
   Background: {
     background: '#F57921',
     width: "35%",
-    height: 650
+    position: "relative",
+    // height: 700
   },
   Border: {
     margin: "auto",
@@ -45,16 +46,22 @@ const styles = {
     marginTop: 10
   },
   Table: {
-     marginTop: 30,
+     margin: 30,
      width: 150,
      background: "#F57921",
-     marginLeft: 50
+     marginLeft: 50,
+     marginButtom: 30
   },
   Img: {
     width:400,
     height:125,
     margin: "auto",
     padding: 10
+  },
+  Footer: {
+    background: '#F57921',
+    width: "35%",
+    position: "relative",
   }
 };
 
@@ -254,6 +261,7 @@ handleClick () {
 
 render () {
     let logo=require('../specification/title.png')
+    let footer=require('../specification/footer.png')
     return (      
       <div style={styles.Background}>
       <img src = {logo} style={styles.Img}/>
@@ -269,6 +277,9 @@ render () {
       <div id="score" style={styles.Table}>
       <Score currenttotal={this.state.currenttotal} total={this.state.total} words={this.state.storage} currentword={this.state.currentword}/>
       </div>
+      <footer>
+      <img src = {footer} style={styles.Footer}/>
+      </footer>
       </div>
 
     );
