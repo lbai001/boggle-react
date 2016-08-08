@@ -9,13 +9,17 @@ const styles = {
     height: 50,
     margin: 5,
     background:'white',
-    border:20
+    border:20,
+    fontWeight:"bold",
+    boxShadow: "0px 4px 3px 0px"
   },
   ButtonActive: {
     width: 50,
     height: 50,
     margin: 5,
-    background:'#ACCEEC'
+    background:'#ACCEEC',
+    fontWeight:"bold"
+
   },
   Background: {
     background: '#F57921',
