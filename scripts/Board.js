@@ -37,19 +37,19 @@ const styles = {
   },
   Float: {
     float: "right",
-    marginRight: 50,
+    marginRight: 60,
     marginTop: 10
   },
   CW: {
     float: "left",
-    marginLeft: 50,
+    marginLeft: 60,
     marginTop: 10
   },
   Table: {
      margin: 30,
      width: 150,
      background: "#F57921",
-     marginLeft: 50,
+     marginLeft: 60,
      marginButtom: 30
   },
   Img: {
