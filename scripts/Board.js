@@ -8,18 +8,54 @@ const styles = {
     width: 50,
     height: 50,
     margin: 5,
-    background:'white'
+    background:'white',
+    border:20
   },
   ButtonActive: {
     width: 50,
     height: 50,
     margin: 5,
     background:'#ACCEEC'
+  },
+  Background: {
+    background: '#F57921',
+    width: "35%",
+    height: 650
+  },
+  Border: {
+    margin: "auto",
+    width: "78%",
+    border: "5px solid #FFCA08",
+    padding: "10px",
+    background: "#398BD4",
+    marginTop: 30
+  },
+  Float: {
+    float: "right",
+    marginRight: 50,
+    marginTop: 10
+  },
+  CW: {
+    float: "left",
+    marginLeft: 50,
+    marginTop: 10
+  },
+  Table: {
+     marginTop: 30,
+     width: 150,
+     background: "#F57921",
+     marginLeft: 50
+  },
+  Img: {
+    width:400,
+    height:125,
+    margin: "auto",
+    padding: 10
   }
 };
 
 export default class Board extends Component {
- constructor (props) {
+  constructor (props) {
 		super(props);
     this.state = {
       item:"",
@@ -34,7 +70,7 @@ export default class Board extends Component {
     }
   }
 
-  componentWillMount() {
+componentWillMount() {
 		let objectBoard=this.formatLetters(this.diceGenarator())
     this.setState({
       objectBoard: objectBoard
@@ -42,7 +78,7 @@ export default class Board extends Component {
   }
 
 
- diceGenarator () {  	
+diceGenarator () {  	
   	let dice=["aaafrs","aaeeee","aafirs","adennn","aeeeem","aeegmu","aegmnn","afirsy","bjkqxz","ccenst","ceiilt","ceilpt","ceipst","ddhnot","dhhlor","dhlnor","dhlnor","eiiitt","emottt","ensssu","fiprsy","gorrvw","iprrry","nootuw","ooottuS"]
   	let holder=[]
   	let randomLetter=Math.floor(Math.random()*6)
@@ -68,7 +104,7 @@ export default class Board extends Component {
   	return result;
   }
 
- formatLetters (array) {
+formatLetters (array) {
   	let holder=[[], [], [], [], []]
   	let counter=0
   
@@ -93,11 +129,11 @@ export default class Board extends Component {
  	});
  }
 
- onItemClick (item, e) {
+onItemClick (item, e) {
   console.log(e.dispatchConfig)
-  var currentitem=this.getLocation(this.state.objectBoard,item)
+  let currentitem=this.getLocation(this.state.objectBoard,item)
   console.log(this.state.clicked);
-  var previtem=this.getLocation(this.state.objectBoard, this.state.clicked[this.state.clicked.length - 1])
+  let previtem=this.getLocation(this.state.objectBoard, this.state.clicked[this.state.clicked.length - 1])
   if(this.state.clicked.indexOf(item)===-1){
     if(this.state.clicked.length === 0){
       this.state.clicked.push(item)
@@ -118,7 +154,7 @@ export default class Board extends Component {
     }
  	}
 
-  styleButton (elem) {
+styleButton (elem) {
     if(this.state.clicked.indexOf(elem) > -1) {
       return this.state.activeCss
     }else {
@@ -128,7 +164,7 @@ export default class Board extends Component {
   }
 
  
-  createButtons (array) {
+createButtons (array) {
     return array.map((arr) => {
  		 return (arr).map((elem) => {
         return(
@@ -139,10 +175,10 @@ export default class Board extends Component {
  }
  
  
- getLocation (array,item) {
+getLocation (array,item) {
  	for(var i=0;i<array.length;i++){
- 		var currentRow=array[i]
- 		var currentRowNum=i
+ 		let currentRow=array[i]
+ 		let currentRowNum=i
  		if(currentRow.indexOf(item)!==-1){
  			return {key: item.key, row: currentRowNum, index: currentRow.indexOf(item)}
  		}
@@ -152,7 +188,7 @@ export default class Board extends Component {
 handleClick () {
   let combo=(this.state.item).toLowerCase();
   let scale={
-    1: 10,
+    1: 1,
     3: 1,
     5: 2,
     6: 3,
@@ -168,7 +204,7 @@ handleClick () {
       this.setState({
         currentword: combo
       },function() {
-        console.log(this.state.currentword)
+        console.log("this is combo", combo)
       })
     }
     if(combo.length===1 || combo.length===2){
@@ -176,21 +212,27 @@ handleClick () {
       }
       if(combo.length===3 || combo.length===4){
         sum+=scale[3]
+
       }
       if(combo.length===5){
         sum+= scale[5]
+
       }
       if(combo.length===6){
         sum+=scale[6]
+
       }
       if(combo.length===7){
         sum+= scale[7]
+
       }
       if(combo.length>8){
         sum+=11
+
       }
 
   }
+  console.log(sum)
 
   }
     this.setState({
@@ -206,21 +248,21 @@ handleClick () {
 }
 
 
-  
-  render () {
+render () {
+    let logo=require('../specification/title.png')
     return (      
-      <div>
-      <h1>BOGGLES!</h1>
-      <div id="board">
+      <div style={styles.Background}>
+      <img src = {logo} style={styles.Img}/>
+      <div id="board" style={styles.Border}>
       {this.createRows(this.createButtons(this.state.objectBoard))}
       </div>
-      <div id="submit">
+      <div id="submit" style={styles.Float}>
       <button onClick={this.handleClick.bind(this)}>Submit</button>
       </div>
-      <div id="currentword">
+      <div id="currentword" style={styles.CW}>
       <Current clickedWord={this.state.item}/>
       </div>
-      <div id="score">
+      <div id="score" style={styles.Table}>
       <Score currenttotal={this.state.currenttotal} total={this.state.total} words={this.state.storage} currentword={this.state.currentword}/>
       </div>
       </div>

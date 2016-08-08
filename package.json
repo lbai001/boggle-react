@@ -23,6 +23,7 @@
   "homepage": "https://github.com/robawilkinson/boggle-challenge",
   "dependencies": {
     "babel-runtime": "^6.3.19",
+    "file-loader": "^0.9.0",
     "fixed-data-table": "^0.6.3",
     "jquery": "^3.1.0",
     "react": "^0.14.5",
@@ -42,6 +43,8 @@
     "babel-preset-stage-0": "^6.3.13",
     "eslint": "^0.21.2",
     "eslint-plugin-react": "^2.3.0",
+    "image-webpack-loader": "^2.0.0",
+    "img-loader": "^1.3.1",
     "react-transform-hmr": "^1.0.1",
     "webpack": "^1.8.4",
     "webpack-dev-server": "^1.8.0"
