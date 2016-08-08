@@ -29,7 +29,7 @@ const styles = {
   },
   Border: {
     margin: "auto",
-    width: "78%",
+    width: "74%",
     border: "5px solid #FFCA08",
     padding: "10px",
     background: "#398BD4",
@@ -76,8 +76,7 @@ export default class Board extends Component {
       activeCss: styles.ButtonActive,
       storage:[],
       total:0,
-      currenttotal:"",
-      currentword:""
+      currenttotal:""
     }
   }
 
@@ -196,6 +195,9 @@ getLocation (array,item) {
  	}
  }
 
+createObj (combo,sum){
+  return{combo: combo, sum:sum}
+}
 handleClick () {
   let combo=(this.state.item).toLowerCase();
   let scale={
@@ -206,46 +208,37 @@ handleClick () {
     7: 5  
   }
   let sum=0;
-  let rows=[];
   for(var i=0;i<data.length;i++){
     if(combo===data[i]){
-    if(this.state.storage.indexOf(combo)===-1){
-      this.state.storage.push(combo)
+      if(this.state.storage.indexOf(combo)===-1){
+          if(combo.length===1 || combo.length===2){
+            sum+=scale[1]
+          }
+          if(combo.length===3 || combo.length===4){
+            sum+=scale[3]
+
+          }
+          if(combo.length===5){
+            sum+= scale[5]
+
+          }
+          if(combo.length===6){
+            sum+=scale[6]
+
+          }
+          if(combo.length===7){
+            sum+= scale[7]
+
+          }
+          if(combo.length>8){
+            sum+=11
+
+          }
+      this.state.storage.push(this.createObj(combo,sum))
       console.log('bitch',this.state.storage)
-      this.setState({
-        currentword: combo
-      },function() {
-        console.log("this is combo", combo)
-      })
+        }
+      }
     }
-    if(combo.length===1 || combo.length===2){
-        sum+=scale[1]
-      }
-      if(combo.length===3 || combo.length===4){
-        sum+=scale[3]
-
-      }
-      if(combo.length===5){
-        sum+= scale[5]
-
-      }
-      if(combo.length===6){
-        sum+=scale[6]
-
-      }
-      if(combo.length===7){
-        sum+= scale[7]
-
-      }
-      if(combo.length>8){
-        sum+=11
-
-      }
-
-  }
-  console.log(sum)
-
-  }
     this.setState({
       storage: this.state.storage,
       item: "",

@@ -20,14 +20,13 @@ const styles = {
 	}
 };
 
-
 export default class Score extends Component {
-
 render() {
-  	console.log('inscore',this.props)
+console.log(this.props.words)
   	let r=this.props.words.map(function(v){
-  		return(<tr style={styles.row}><td style={styles.row}>{v}</td><td style={styles.row}>{this.props.currenttotal}</td></tr>)
-  	}.bind(this));
+  		return(<tr style={styles.row}><td style={styles.row}>{v.combo}</td><td style={styles.row}>{v.sum}</td></tr>)
+  	
+  }.bind(this));
 
 	return (
 <table>
