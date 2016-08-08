@@ -23,9 +23,11 @@
   "homepage": "https://github.com/robawilkinson/boggle-challenge",
   "dependencies": {
     "babel-runtime": "^6.3.19",
+    "fixed-data-table": "^0.6.3",
     "jquery": "^3.1.0",
     "react": "^0.14.5",
     "react-bootstrap": "^0.30.1",
+    "react-bootstrap-table": "^2.4.0",
     "react-dom": "^0.14.5",
     "underscore": "^1.8.3"
   },
